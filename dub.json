@@ -12,8 +12,7 @@
             "platforms"    : [ "linux" ],
 			"dependencies" :
 			{
-	            "fontconfig" : "2.0.0",
-	            "bc-string"  : "1.2.1"
+	            "fontconfig" : "2.0.0"
 			},
 			"versions"    : [ "FontConfig" ],
 		},

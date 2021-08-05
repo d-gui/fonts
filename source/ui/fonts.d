@@ -3,16 +3,17 @@ module ui.fonts;
 version ( FontConfig ):
 public import fontconfig.fontconfig;
 import core.stdc.stdio  : printf;
-import std.string : fromStringz;
+import core.stdc.string : strlen;
+import core.stdc.string : memcpy;
+import core.stdc.stdlib : malloc;
 
-/** */
-//nothrow @nogc
-string queryFont( string family, int style, float height, float slant, float outline )
+/** 
+ * Returns C string contains path to the OS font file
+ * After using program showld free string with free().
+ */
+nothrow @nogc
+char* queryFont( immutable char* family, int style, float height, float slant, float outline )
 {
-    import bc.string.string;
-
-    // FcInit(); // executed in loadUI()
-
     FcPattern* pat;
     FcPattern* match;
     FcChar8*   path;
@@ -21,7 +22,7 @@ string queryFont( string family, int style, float height, float slant, float out
     pat = FcPatternCreate();
 
     // family
-    FcPatternAddString( pat, "family", /*cast( const FcChar8* )*/ family.tempCString );
+    FcPatternAddString( pat, "family", /*cast( const FcChar8* )*/ family );
     
     // bold
     if ( style == 1 ) 
@@ -61,14 +62,18 @@ string queryFont( string family, int style, float height, float slant, float out
     FcPatternGetString( match, "file", 0, &path );
 
     //
-    //printf( "font: %s\n", path );
-    string spath = path.fromStringz;
+    char* retString = null;
+    if ( path )
+    {
+        size_t l = strlen( path );
+        retString = cast( char* ) malloc( l );
+        memcpy( retString, path, l );
+    }
 
     //
     FcPatternDestroy( match );
     FcPatternDestroy( pat );
 
-    // Fcfini(); // executed in unloadUI()
-
-    return spath;
+    return retString;
 }
+
