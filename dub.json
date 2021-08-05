@@ -1,0 +1,21 @@
+{
+	"authors"     : [ "Vitaliy Fadeev" ],
+	"copyright"   : "Copyright © 2021, Vitaliy Fadeev",
+	"description" : "D application, quering OS fonts",
+	"license"     : "GPL3",
+	"name"        : "fonts",
+    "targetType"  : "library",
+    "configurations": 
+    [
+        {
+            "name"         : "linux-gl3",
+            "platforms"    : [ "linux" ],
+			"dependencies" :
+			{
+	            "fontconfig" : "2.0.0",
+	            "bc-string"  : "1.2.1"
+			},
+			"versions"    : [ "FontConfig" ],
+		},
+	]
+}
